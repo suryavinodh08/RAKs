@@ -1,0 +1,32 @@
+set_cpf_version 1.1
+
+set_hierarchy_separator /
+set_design row_dec
+
+####################
+####################
+
+create_power_nets -nets VDD -voltage 1.2
+create_ground_nets -nets VSS 
+
+#########################
+###########################
+
+create_power_domain -name pd1 -default -instances *
+
+update_power_domain -name pd1 -primary_power_net VDD \
+			     -primary_ground_net VSS
+
+create_global_connection -net VDD -domain pd1 -pins VDD
+
+create_global_connection -net VSS -domain pd1 -pins VSS
+
+################
+
+create_nominal_condition -name nc1 -voltage 1.2
+
+create_power_mode -name PM1 -domain_conditions { pd1@nc1} -default
+
+
+end_design
+
